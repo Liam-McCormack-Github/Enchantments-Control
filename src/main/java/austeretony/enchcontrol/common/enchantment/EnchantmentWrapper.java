@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import austeretony.enchcontrol.common.util.ReflectionUtils;
 import com.udojava.evalex.Expression;
 
 import austeretony.enchcontrol.common.config.ConfigLoader;
@@ -53,8 +54,8 @@ public class EnchantmentWrapper {
 
     private EnchantmentWrapper(ResourceLocation registryName) {
         this.registryName = registryName;
-        this.modid = registryName.getResourceDomain();
-        this.resourceName = registryName.getResourcePath();
+        this.modid = registryName.getNamespace();
+        this.resourceName = registryName.getPath();
         WRAPPERS.put(registryName, this);
     }
 
@@ -81,8 +82,8 @@ public class EnchantmentWrapper {
                     enchantment.getName(),
                     enchantment.getMinLevel(), 
                     enchantment.getMaxLevel());
-            wrapper.setEquipmentSlots(enchantment.applicableEquipmentTypes);
-            wrapper.setRarity(enchantment.rarity);
+            wrapper.setEquipmentSlots(ReflectionUtils.getApplicableEquipmentTypes(enchantment));
+            wrapper.setRarity(enchantment.getRarity());
             wrapper.setType(enchantment.type);
             wrapper.initialized = true;
             wrapper.setMinEnchantabilityEvaluation(ConfigLoader.MIN_ENCH_DEFAULT_EVAL);
@@ -106,8 +107,8 @@ public class EnchantmentWrapper {
                 try {
                     rarity = Enchantment.Rarity.valueOf(wrapper.getRarityString());
                 } catch(IllegalArgumentException exception) {
-                    ECMain.LOGGER.error("Unknown enchantment rarity: <{}>! Default value will be used: <{}>.", wrapper.getRarityString(), enchantment.rarity);
-                    rarity = enchantment.rarity;
+                    ECMain.LOGGER.error("Unknown enchantment rarity: <{}>! Default value will be used: <{}>.", wrapper.getRarityString(), enchantment.getRarity());
+                    rarity = enchantment.getRarity();
                 }
                 wrapper.setRarity(rarity);
                 EnumEnchantmentType type;
@@ -118,8 +119,8 @@ public class EnchantmentWrapper {
                     type = enchantment.type;
                 }
                 wrapper.setType(type);
-                enchantment.applicableEquipmentTypes = wrapper.getEquipmentSlots();
-                enchantment.rarity = wrapper.getRarity();
+                ReflectionUtils.setApplicableEquipmentTypes(enchantment, wrapper.getEquipmentSlots());
+                ReflectionUtils.setRarity(enchantment, wrapper.getRarity());
                 enchantment.type = wrapper.getType();
                 wrapper.setEnchantment(enchantment);
                 wrapper.calculateEnchantability();

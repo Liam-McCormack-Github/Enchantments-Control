@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.TreeMap;
 
+import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.GsonBuilder;
@@ -18,7 +19,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 public class ECUtils {
-
+    /*
     private final static TreeMap<Integer, String> ROMAN_NUMERALS = new TreeMap<>();
 
     static {
@@ -36,6 +37,7 @@ public class ECUtils {
         ROMAN_NUMERALS.put(4, "IV");
         ROMAN_NUMERALS.put(1, "I");
     }
+     */
 
     public static JsonElement getInternalJsonData(String path) throws IOException {	
         JsonElement rawData = null;		
@@ -73,6 +75,13 @@ public class ECUtils {
     }
 
     public static String toRomanNumeral(int number) {
+        String prefix = TextFormatting.DARK_PURPLE.toString();
+        String suffix = TextFormatting.RESET.toString();
+        return prefix + number + suffix;
+    }
+
+    /*
+    public static String toRomanNumeral(int number) {
         if (number == 0)
             return "0";
         if (number < 0)
@@ -82,4 +91,5 @@ public class ECUtils {
             return ROMAN_NUMERALS.get(number);
         return ROMAN_NUMERALS.get(l) + toRomanNumeral(number - l);
     }
+    */
 }

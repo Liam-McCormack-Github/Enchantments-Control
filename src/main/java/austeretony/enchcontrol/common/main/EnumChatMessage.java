@@ -3,6 +3,7 @@ package austeretony.enchcontrol.common.main;
 import java.util.Set;
 import java.util.TreeSet;
 
+import austeretony.enchcontrol.common.util.ReflectionUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -294,7 +295,7 @@ public enum EnumChatMessage {
                 msg1 = new TextComponentTranslation("ec.command.info.slots");
                 msg1.getStyle().setColor(TextFormatting.AQUA);
                 CommonReference.sendMessage(player, msg1);
-                for (EntityEquipmentSlot slot : ench.applicableEquipmentTypes)
+                for (EntityEquipmentSlot slot : ReflectionUtils.getApplicableEquipmentTypes(ench))
                     CommonReference.sendMessage(player, new TextComponentString(slot.toString()));
                 //Incompat status
                 msg1 = new TextComponentTranslation("ec.command.info.incompatStatus");
